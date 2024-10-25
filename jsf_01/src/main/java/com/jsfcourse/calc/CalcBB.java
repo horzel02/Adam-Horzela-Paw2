@@ -3,13 +3,11 @@ package com.jsfcourse.calc;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 
 @Named
 @RequestScoped
-//@SessionScoped
 public class CalcBB {
 
     private String loanAmount; // Kwota kredytu
