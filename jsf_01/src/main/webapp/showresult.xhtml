@@ -6,14 +6,22 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Wynik</title>
+        <title>Twoja kwota</title>
     </h:head>
     <h:body>
-        <p:messages />
         
-        <h:outputText value="wynik: #{calcBB.result}"/>
-        <h:form>
-            <p:commandButton value="Powrót" action="index" />
-        </h:form>
+        <p:panel header="Wynik obliczeń" style="width: 50%; margin: auto; margin-top: 20px; text-align: center;">
+            
+            <p:messages autoUpdate="true" closable="true" />
+
+            <h:outputText value="Miesięczna kwota: " style="font-weight: bold; font-size: 18px;" />
+            <h:outputText value="#{calcBB.result}" style="color: green; font-size: 18px;" />
+
+            <h:form style="margin-top: 20px;">
+                <p:commandButton value="Powrót" action="index" icon="pi pi-arrow-left" style="margin-top: 10px;" />
+            </h:form>
+
+        </p:panel>
+
     </h:body>
 </html>

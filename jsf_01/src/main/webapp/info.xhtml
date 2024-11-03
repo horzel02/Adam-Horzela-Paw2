@@ -6,14 +6,17 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 <h:head>
-<title>Informacje</title>
+    <title>Informacje</title>
 </h:head>
 <h:body>
-<h1 >Informacje</h1>
+    
+    <p:panel header="Informacje o aplikacji" style="width: 50%; margin: auto; margin-top: 20px;">
+        <h:outputText value="Pusta strona przykładowa ..." style="font-size: 14px; color: #555;" />
+        
+        <h:form style="text-align: center; margin-top: 20px;">
+            <p:commandButton value="Strona główna" action="index" icon="pi pi-home" style="margin-top: 10px;" />
+        </h:form>
+    </p:panel>
 
-Pusta strona przykładowa ...
-<h:form>
-<p:commandButton value="Strona główna" action="index"/>
-</h:form>
-
-</h:body></html>
+</h:body>
+</html>

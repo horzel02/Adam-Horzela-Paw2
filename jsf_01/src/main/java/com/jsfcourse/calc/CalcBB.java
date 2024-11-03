@@ -57,8 +57,20 @@ public class CalcBB {
             int yearsVal = Integer.parseInt(years);
             double interestRateVal = Double.parseDouble(interestRate) / 100;
 
+            if (loanAmountVal < 1000 || loanAmountVal > 1000000) {
+                ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Kwota kredytu musi być w zakresie od 1000 do 1000000.", null));
+                return false;
+            }
+            if (yearsVal < 1 || yearsVal > 30) {
+                ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Liczba lat musi być w zakresie od 1 do 30.", null));
+                return false;
+            }
+            if (interestRateVal < 0.001 || interestRateVal > 0.20) {
+                ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Oprocentowanie musi być w zakresie od 0.1% do 20%.", null));
+                return false;
+            }
+            
             int months = yearsVal * 12;
-
             double monthlyRate = interestRateVal / 12;
 
             if (interestRateVal > 0) {
@@ -88,7 +100,7 @@ public class CalcBB {
     // Put result in messages on AJAX call
     public String calc_AJAX() {
         if (doTheMath()) {
-            ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Wynik: " + result, null));
+            ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Miesięczna kwota: " + result, null));
         }
         return null;
     }
