@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/main-template.xhtml">
+
+	<ui:define name="title">
+        Kalkulator kredytowy
+    </ui:define>
+
+	<ui:define name="content">
+
+		<p:panel header="Oblicz swój kredyt" toggleable="true"
+			toggleSpeed="500" closeSpeed="500" styleClass="calculator-panel">
+			<h:form id="creditForm">
+
+				<h:panelGrid columns="3">
+					<p:outputLabel for="loanAmount" value="Kwota kredytu:" />
+					<p:inputText id="loanAmount" value="#{calcBB.loanAmount}"
+						required="true" requiredMessage="Podaj kwotę kredytu"
+						validatorMessage="Kwota kredytu musi być liczbą między 1 000 a 1 000 000">
+						<f:validateDoubleRange minimum="1000" maximum="1000000" />
+					</p:inputText>
+					<p:message for="loanAmount" />
+
+					<p:outputLabel for="years" value="Liczba lat:" />
+					<p:inputText id="years" value="#{calcBB.years}" required="true"
+						requiredMessage="Podaj liczbę lat"
+						validatorMessage="Liczba lat musi być liczbą całkowitą między 1 a 30">
+						<f:validateLongRange minimum="1" maximum="30" />
+					</p:inputText>
+					<p:message for="years" />
+
+					<p:outputLabel for="interestRate" value="Oprocentowanie (w %):" />
+					<p:inputText id="interestRate" value="#{calcBB.interestRate}"
+						required="true" requiredMessage="Podaj oprocentowanie"
+						validatorMessage="Oprocentowanie musi być liczbą między 0,1% a 20%">
+						<f:validateDoubleRange minimum="0.1" maximum="20.0" />
+					</p:inputText>
+					<p:message for="interestRate" />
+				</h:panelGrid>
+
+				<p:commandButton value="Oblicz ratę" action="#{calcBB.calc()}"
+					update="@form" />
+
+				<!-- Przycisk AJAX wywołujący dialog -->
+				<p:commandButton value="Oblicz ratę AJAX"
+					action="#{calcBB.calc_AJAX()}" update=":creditForm :dialogResult"
+					oncomplete="PF('dlgResult').show();" />
+
+				<p:commandButton value="Informacje" action="#{calcBB.info()}"
+					immediate="true" />
+
+				<p:growl id="msg" life="3000" />
+			</h:form>
+		</p:panel>
+
+		<p:dialog header="Wynik obliczeń" widgetVar="dlgResult" modal="true"
+			showEffect="fade" hideEffect="fade" id="dialogResult"
+			styleClass="dialog-result">
+			<h:outputText value="Twoja miesięczna rata wynosi:" />
+			<h2>#{calcBB.result} PLN</h2>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>
+</html>
