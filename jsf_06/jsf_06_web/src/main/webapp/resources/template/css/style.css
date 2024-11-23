@@ -1,0 +1,164 @@
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1a1a1a, #2d2d2d, #1f2a3f, #2a3d55);
+    background-size: 200% 200%;
+    animation: gradientAnimation 10s ease infinite;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 0;
+}
+
+#page_wrapper {
+    max-width: 1200px; /* Zwiększona szerokość */
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #1e1e1e; /* Ciemniejsze tło dla wrappera */
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+.header {
+    font-size: 36px;
+    font-weight: bold;
+    color: #76c7c0; /* Jasny niebieskozielony kolor dla nagłówka */
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.main-panel {
+    background-color: #2a2a2a; /* Ciemne tło panelu */
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    color: #e0e0e0; /* Kolor tekstu */
+    width: 100%;
+}
+
+.ui-panel-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffcc00; /* Złoty akcent dla tytułu panelu */
+    text-align: center;
+}
+
+.ui-outputlabel {
+    font-weight: bold;
+    color: #76c7c0; /* Jasny niebieskozielony kolor dla etykiet */
+    font-size: 18px;
+}
+
+.ui-inputfield {
+    width: 100%;
+    padding: 12px;
+    background-color: #333333;
+    border: 1px solid #555555;
+    border-radius: 5px;
+    font-size: 18px;
+    color: #e0e0e0;
+}
+
+.ui-inputfield:focus {
+    border-color: #ff9800; /* Pomarańczowy akcent przy focus */
+    box-shadow: 0 0 5px rgba(255, 152, 0, 0.5);
+}
+
+.ui-button, .button-primary, .button-secondary {
+    background-color: #ff9800; /* Pomarańczowy akcent dla przycisków */
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    font-size: 18px;
+    padding: 12px 25px;
+    border-radius: 5px;
+}
+
+.ui-button:hover, .button-primary:hover, .button-secondary:hover {
+    background-color: #ffcc80; /* Jaśniejszy pomarańczowy na hover */
+    transform: translateY(-2px); /* Lekki efekt podniesienia na hover */
+}
+
+.button-secondary {
+    background-color: #76c7c0; /* Niebieskozielony akcent dla drugorzędnych przycisków */
+}
+
+.button-secondary:hover {
+    background-color: #98e0da; /* Jaśniejszy niebieskozielony na hover */
+}
+
+.dialog-result {
+    font-size: 18px;
+    color: #e0e0e0;
+}
+
+.dialog-result h2 {
+    color: #ff9800; /* Kolor akcentu dla wyniku */
+}
+
+.ui-growl {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.ui-messages-info {
+    background-color: #4caf50; /* Zielony dla informacji */
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+.ui-messages-error {
+    background-color: #f44336; /* Czerwony dla błędów */
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+.p-datatable {
+    background-color: #2a2a2a; /* Tło tabeli */
+    color: #e0e0e0; /* Tekst tabeli */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.p-datatable-header, .p-datatable-footer {
+    background-color: #1e1e1e; /* Nagłówek i stopka tabeli */
+    color: #e0e0e0;
+}
+
+.p-datatable .ui-state-default {
+    background-color: #333333; /* Tło wierszy tabeli */
+    color: #e0e0e0;
+}
+
+.p-datatable .ui-state-default:hover {
+    background-color: #444444; /* Tło wierszy tabeli na hover */
+}
+
+.p-datatable td {
+    padding: 10px;
+}
+
+@media (max-width: 768px) {
+    #page_wrapper {
+        padding: 20px;
+    }
+
+    .main-panel {
+        padding: 20px;
+    }
+
+    .header {
+        font-size: 28px;
+    }
+}
