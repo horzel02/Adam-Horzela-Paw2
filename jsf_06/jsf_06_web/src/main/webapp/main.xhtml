@@ -1,0 +1,87 @@
+<ui:composition template="/templates/main-template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	<ui:define name="title">Strona główna</ui:define>
+
+	<ui:define name="content">
+		<h1 class="main-title">Rezerwolo - Rezerwacja stolików</h1>
+		<hr class="divider" />
+
+
+		<div class="p-grid p-justify-center" style="gap: 20px;">
+			<div class="section-container">
+				<div>
+					<h2 class="section-title">O nas</h2>
+					<p>Witamy w La Dolce Vita, wyjątkowej restauracji, gdzie smak i
+						elegancja idą w parze. Nasza historia sięga wielu lat wstecz,
+						kiedy postanowiliśmy stworzyć miejsce, które stanie się symbolem
+						doskonałości kulinarnej i gościnności. Z przyjemnością oferujemy
+						naszym gościom nie tylko wyjątkowe potrawy, ale także
+						niezapomnianą atmosferę, która sprawia, że każda wizyta u nas to
+						wyjątkowe doświadczenie. Dołącz do naszej rodziny i odkryj,
+						dlaczego nasi goście wracają do nas z uśmiechem.</p>
+
+				</div>
+				<h:graphicImage library="template" name="img/restaurant.png"
+					alt="O nas" />
+			</div>
+			<hr class="clean" />
+			<div class="section-container">
+				<h:graphicImage library="template" name="img/menu.png" alt="Menu" />
+				<div>
+					<h2 class="section-title">Menu</h2>
+					<p>Nasze menu to prawdziwa uczta dla zmysłów! Inspirujemy się
+						tradycyjnymi recepturami kuchni włoskiej, które łączymy z
+						nowoczesnymi trendami kulinarnymi. Każde danie w naszej karcie to
+						hołd dla świeżych składników i oryginalnych smaków. Od
+						aromatycznych makaronów, poprzez wyśmienite pizze, aż po wyjątkowe
+						desery – wszystko przygotowujemy z dbałością o najmniejszy detal.
+						Oferujemy również dania dla osób na diecie wegetariańskiej i
+						bezglutenowej, aby każdy mógł znaleźć coś dla siebie.</p>
+
+
+				</div>
+			</div>
+			<hr class="clean" />
+			<div class="section-container">
+				<div>
+					<h2 class="section-title">Rezerwuj teraz!</h2>
+					<p>Planujesz romantyczną kolację, rodzinne spotkanie, czy może
+						biznesowy lunch? Zarezerwuj stolik już dziś i zapewnij sobie
+						miejsce w naszej restauracji. Oferujemy prosty i szybki system
+						rezerwacji online, dzięki któremu z łatwością wybierzesz dogodny
+						termin. Nasz zespół zadba o każdy szczegół Twojej wizyty, abyś
+						mógł skupić się na smaku i relaksie. Dołącz do grona naszych
+						zadowolonych gości i przekonaj się, jak łatwo można cieszyć się
+						chwilami w La Dolce Vita.</p>
+
+				</div>
+				<h:graphicImage library="template" name="img/reservation.png"
+					alt="Rezerwuj teraz" />
+			</div>
+			<hr class="clean" />
+			<div class="section-container">
+				<h:graphicImage library="template" name="img/contact.png"
+					alt="Kontakt" />
+				<div>
+					<h2 class="section-title">Kontakt</h2>
+					<ul>
+						<li>Nr kontaktowy: <strong>555 666 777</strong></li>
+						<li>Adres email: <strong>rezerwolo@mail.com</strong></li>
+						<li>Adres: <strong>ul. Szymona Marciniaka 21,
+								Bydgoszcz</strong></li>
+						<li>Godziny otwarcia: <strong>15:00 - 23:30</strong></li>
+					</ul>
+					<p>Jeśli masz pytania, specjalne życzenia lub chcesz
+						zarezerwować stolik na większe wydarzenie, skontaktuj się z nami!
+						Nasz przyjazny zespół z przyjemnością odpowie na wszystkie Twoje
+						pytania i pomoże w organizacji niezapomnianej wizyty.</p>
+
+				</div>
+			</div>
+
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+<div class="header">
+	<div class="card">
+		<h:form>
+			<p:growl id="messages" />
+
+			<p:menubar hideDelay="1000">
+				<!-- Link na początek menu -->
+				<f:facet name="start">
+					<h:outputLink value="main.xhtml" styleClass="logo">
+						Rezerwolo
+					</h:outputLink>
+				</f:facet>
+
+				<!-- Link do Listy użytkowników -->
+				<p:menuitem value="Strona główna" icon="pi pi-fw pi-home"
+					outcome="main.xhtml" />
+				<p:menuitem value="Lista użytkowników" icon="pi pi-fw pi-users"
+					outcome="userList.xhtml" />
+				<p:menuitem value="Dodaj użytkownika" icon="pi pi-fw pi-user-plus"
+					outcome="userEdit.xhtml" />
+
+				<!-- Koniec menu -->
+				<f:facet name="end">
+				</f:facet>
+			</p:menubar>
+		</h:form>
+	</div>
+</div>
+</ui:composition>

@@ -23,7 +23,6 @@ public class UserEdit implements Serializable {
 
 
     private User user;
-    private User loaded;
 
     @EJB
     private UserDAO userDAO;
