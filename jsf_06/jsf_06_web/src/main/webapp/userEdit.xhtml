@@ -3,11 +3,11 @@
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-	
+
 	<f:metadata>
-		<f:viewAction action="#{userEdit.onLoad}" />
+		<f:viewAction action="#{userEditBB.onLoad}" />
 	</f:metadata>
-	
+
 	<ui:define name="title">Edycja użytkownika</ui:define>
 
 	<ui:define name="content">
@@ -20,7 +20,7 @@
 
 						<h:outputLabel for="name" value="Imię:"
 							styleClass="ui-outputlabel" />
-						<p:inputText id="name" value="#{userEdit.user.name}"
+						<p:inputText id="name" value="#{userEditBB.user.name}"
 							styleClass="ui-inputfield" required="true"
 							requiredMessage="Podaj imię"
 							validatorMessage="Imię może mieć maksymalnie 50 znaków">
@@ -30,7 +30,7 @@
 
 						<h:outputLabel for="surname" value="Nazwisko:"
 							styleClass="ui-outputlabel" />
-						<p:inputText id="surname" value="#{userEdit.user.surname}"
+						<p:inputText id="surname" value="#{userEditBB.user.surname}"
 							styleClass="ui-inputfield" required="true"
 							requiredMessage="Podaj nazwisko"
 							validatorMessage="Nazwisko może mieć maksymalnie 50 znaków">
@@ -40,7 +40,7 @@
 
 						<h:outputLabel for="email" value="Email:"
 							styleClass="ui-outputlabel" />
-						<p:inputText id="email" value="#{userEdit.user.email}"
+						<p:inputText id="email" value="#{userEditBB.user.email}"
 							styleClass="ui-inputfield" required="true"
 							requiredMessage="Podaj email"
 							validatorMessage="Podaj poprawny adres email">
@@ -49,7 +49,7 @@
 
 						<h:outputLabel for="password" value="Hasło:"
 							styleClass="ui-outputlabel" />
-						<p:inputText id="password" value="#{userEdit.user.password}"
+						<p:inputText id="password" value="#{userEditBB.user.password}"
 							styleClass="ui-inputfield" required="true"
 							requiredMessage="Podaj hasło"
 							validatorMessage="Hasło musi mieć od 6 do 100 znaków">
@@ -59,7 +59,7 @@
 					</h:panelGrid>
 
 					<div style="margin-top: 20px; text-align: center;">
-						<p:commandButton value="Zapisz" action="#{userEdit.saveUser}"
+						<p:commandButton value="Zapisz" action="#{userEditBB.saveUser}"
 							update="@form" styleClass="ui-button" />
 						<p:button value="Anuluj" outcome="userList"
 							styleClass="button-secondary" />

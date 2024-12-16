@@ -1,0 +1,51 @@
+<ui:composition template="/templates/main-template.xhtml" 
+	xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	<ui:define name="title">Logowanie</ui:define>
+
+	<ui:define name="content">
+		<h1 class="main-title">Logowanie</h1>
+		<hr class="divider" />
+
+		<div class="reservation-container">
+			<div class="reservation-form">
+				<p:panel header="Zaloguj się do swojego konta" styleClass="reservation-panel">
+					<h:form>
+						<p:messages id="messages" autoUpdate="true" showDetail="true"
+							showSummary="false" />
+						<p:panelGrid columns="4" styleClass="grid-form">
+							<!-- E-mail -->
+							<p:outputLabel for="email" value="E-mail:" />
+							<p:inputText id="email" value="#{LoginBB.email}" 
+								required="true" requiredMessage="Podaj adres e-mail">
+								<f:validateRegex
+									pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+									validatorMessage="Podaj poprawny adres e-mail." />
+							</p:inputText>
+							<h:outputText value="" />
+
+							<!-- Hasło -->
+							<p:outputLabel for="password" value="Hasło:" />
+							<p:password id="password" value="#{LoginBB.password}" 
+								required="true" requiredMessage="Podaj hasło"
+								validatorMessage="Hasło musi mieć od 6 do 100 znaków">
+								<f:validateLength minimum="6" maximum="100" />
+							</p:password>
+							<h:outputText value="" />
+						</p:panelGrid>
+
+						<!-- Przyciski akcji -->
+						<p:commandButton value="Zaloguj się" icon="pi pi-sign-in" 
+							styleClass="submit-button" action="#{LoginBB.login}" />
+					</h:form>
+				</p:panel>
+
+				<div class="info-panel">
+					<p>Nie masz konta? <h:link value="Zarejestruj się tutaj!" outcome="registration.xhtml" /></p>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
