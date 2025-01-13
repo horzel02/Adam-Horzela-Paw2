@@ -1,30 +1,43 @@
 package com.jsfcourse.BB;
 
 import java.io.Serializable;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Date;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.faces.view.ViewScoped;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import jakarta.faces.view.ViewScoped;
-import jakarta.inject.Named;
-import jakarta.annotation.PostConstruct;
+import com.jsf.dao.ReservationDAO;
+import com.jsf.entities.Reservation;
 
 @Named
 @ViewScoped
 public class ReservationBB implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String date;
+    private Date date; // Obsługuje `p:calendar`
+    private String time; // String do wyboru godziny
     private int table;
-    private String time;
     private int guests;
     private List<String> availableTimes;
+
+    @Inject
+    private ReservationDAO reservationDAO;
 
     @PostConstruct
     public void init() {
         generateAvailableTimes();
     }
 
+    // Generowanie dostępnych godzin rezerwacji
     private void generateAvailableTimes() {
         availableTimes = IntStream.rangeClosed(15, 23)
                 .mapToObj(hour -> String.format("%02d:00", hour))
@@ -36,20 +49,12 @@ public class ReservationBB implements Serializable {
     }
 
     // Gettery i settery
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
-    }
-
-    public int getTable() {
-        return table;
-    }
-
-    public void setTable(int table) {
-        this.table = table;
     }
 
     public String getTime() {
@@ -58,6 +63,14 @@ public class ReservationBB implements Serializable {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public int getTable() {
+        return table;
+    }
+
+    public void setTable(int table) {
+        this.table = table;
     }
 
     public int getGuests() {
@@ -75,4 +88,41 @@ public class ReservationBB implements Serializable {
     public void setAvailableTimes(List<String> availableTimes) {
         this.availableTimes = availableTimes;
     }
+
+    public void addReservation() {
+        FacesContext ctx = FacesContext.getCurrentInstance();
+
+        try {
+            // Tworzenie obiektu rezerwacji
+            Reservation reservation = new Reservation();
+
+            // Ustawianie pól
+            reservation.setDate(date);
+            Time reservationTime = Time.valueOf(time + ":00");
+            reservation.setTime(reservationTime);
+            reservation.setNumberOfPeople(guests);
+            reservation.setStatus("Oczekujące");
+            reservation.setCreatedByUserId(1); // Przykładowy ID użytkownika
+            reservation.setModifiedByUserId(1);
+            reservation.setCreationDate(new Timestamp(System.currentTimeMillis()));
+            reservation.setModificationDate(new Timestamp(System.currentTimeMillis()));
+            reservation.setUserId(1); // Przykładowy ID użytkownika
+
+            // Debug
+            System.out.println("Rezerwacja przed zapisem: " + reservation);
+
+            // Zapis do bazy danych wraz z powiązaniem stolika
+            System.out.println("Przed wywołaniem create()");
+            reservationDAO.createReservation(reservation, table);
+            System.out.println("Po wywołaniu create()");
+
+            ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Rezerwacja została dodana!", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błąd podczas dodawania rezerwacji.", null));
+        }
+    }
+
+
 }

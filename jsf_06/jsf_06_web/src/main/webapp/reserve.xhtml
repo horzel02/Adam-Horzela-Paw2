@@ -1,4 +1,4 @@
-<ui:composition template="/templates/main-template.xhtml"
+<ui:composition template="/templates/main-template.xhtml" 
 	xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
@@ -12,49 +12,50 @@
 		<!-- Formularz rezerwacji -->
 		<div class="reservation-container">
 			<div class="reservation-form">
-				<p:panel header="Wybierz opcję dla siebie"
-					styleClass="reservation-panel">
+				<p:panel header="Wybierz opcję dla siebie" styleClass="reservation-panel">
 					<h:form>
+						<!-- Obsługa wiadomości -->
+						<p:messages id="messages" autoUpdate="true" showDetail="true" showSummary="false" />
+						
 						<p:panelGrid columns="4" styleClass="grid-form">
 							<!-- Data rezerwacji -->
 							<p:outputLabel for="date" value="Data:" />
-							<p:calendar id="date" value="#{reservationBB.date}"
-								pattern="dd-MM-yyyy" mindate="#{reservationBB.today}"
-								showButtonPanel="true" locale="pl" required="true"
+							<p:calendar id="date" value="#{reservationBB.date}" 
+								pattern="dd-MM-yyyy" mindate="#{reservationBB.today}" 
+								showButtonPanel="true" locale="pl" required="true" 
 								requiredMessage="Wybierz datę" />
 							<h:outputText value="" />
 
 							<!-- Wybór stolika -->
 							<p:outputLabel for="table" value="Stolik:" />
-							<p:selectOneMenu id="table" value="#{reservationBB.table}"
-								required="true" requiredMessage="Wybierz stolik"
-								styleClass="form-input" >
-							<f:selectItem itemLabel="Przy oknie" itemValue="1" />
-							<f:selectItem itemLabel="Przy barze" itemValue="2" />
-							<f:selectItem itemLabel="W rogu" itemValue="3" />
-							<f:selectItem itemLabel="Centrum" itemValue="4" />
-							<f:selectItem itemLabel="Taras" itemValue="5" />
+							<p:selectOneMenu id="table" value="#{reservationBB.table}" 
+								required="true" requiredMessage="Wybierz stolik" styleClass="form-input">
+								<f:selectItem itemLabel="Przy oknie" itemValue="1" />
+								<f:selectItem itemLabel="Przy barze" itemValue="2" />
+								<f:selectItem itemLabel="W rogu" itemValue="3" />
+								<f:selectItem itemLabel="Centrum" itemValue="4" />
+								<f:selectItem itemLabel="Taras" itemValue="5" />
 							</p:selectOneMenu>
 							<h:outputText value="" />
 
 							<!-- Godzina rezerwacji -->
 							<p:outputLabel for="time" value="Godzina:" />
-							<p:selectOneMenu id="time" value="#{reservationBB.time}"
-								required="true" requiredMessage="Wybierz godzinę"
-								styleClass="form-input">
+							<p:selectOneMenu id="time" value="#{reservationBB.time}" 
+								required="true" requiredMessage="Wybierz godzinę" styleClass="form-input">
 								<f:selectItems value="#{reservationBB.availableTimes}" />
 							</p:selectOneMenu>
 							<h:outputText value="" />
 
 							<!-- Liczba osób -->
 							<p:outputLabel for="guests" value="Liczba osób:" />
-							<p:spinner id="guests" value="#{reservationBB.guests}" min="1"
+							<p:spinner id="guests" value="#{reservationBB.guests}" min="1" 
 								max="15" required="true" requiredMessage="Wybierz liczbę osób" />
 							<h:outputText value="" />
 						</p:panelGrid>
 
-						<p:commandButton value="Zarezerwuj" icon="pi pi-check"
-							styleClass="submit-button" />
+						<!-- Przycisk rezerwacji -->
+						<p:commandButton value="Zarezerwuj" icon="pi pi-check" 
+							styleClass="submit-button" action="#{reservationBB.addReservation}" update="messages" />
 					</h:form>
 				</p:panel>
 			</div>

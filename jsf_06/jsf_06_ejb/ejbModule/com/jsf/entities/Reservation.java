@@ -3,6 +3,7 @@ package com.jsf.entities;
 import java.io.Serializable;
 import jakarta.persistence.*;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
@@ -49,8 +50,8 @@ public class Reservation implements Serializable {
 	private Integer userId;
 
 	//bi-directional many-to-one association to ReservationTable
-	@OneToMany(mappedBy="reservation")
-	private List<ReservationTable> reservationTables;
+	@OneToMany(mappedBy="reservation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReservationTable> reservationTables = new ArrayList<>();
 
 	public Reservation() {
 	}

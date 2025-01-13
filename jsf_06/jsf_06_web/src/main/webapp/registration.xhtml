@@ -19,7 +19,7 @@
 						<p:panelGrid columns="4" styleClass="grid-form">
 							<!-- Imię -->
 							<p:outputLabel for="firstName" value="Imię:" />
-							<p:inputText id="firstName" value="#{RegistrationBB.firstName}"
+							<p:inputText id="firstName" value="#{registrationBB.firstName}"
 								required="true" requiredMessage="Podaj imię">
 								<f:validateRegex pattern="^[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{2,30}$"
 									validatorMessage="Imię może zawierać tylko litery i musi mieć od 2 do 30 znaków." />
@@ -28,7 +28,7 @@
 
 							<!-- Nazwisko -->
 							<p:outputLabel for="lastName" value="Nazwisko:" />
-							<p:inputText id="lastName" value="#{RegistrationBB.lastName}"
+							<p:inputText id="lastName" value="#{registrationBB.lastName}"
 								required="true" requiredMessage="Podaj nazwisko">
 								<f:validateRegex pattern="^[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{2,50}$"
 									validatorMessage="Nazwisko może zawierać tylko litery i musi mieć od 2 do 50 znaków." />
@@ -37,39 +37,43 @@
 
 							<!-- E-mail -->
 							<p:outputLabel for="email" value="E-mail:" />
-							<p:inputText id="email" value="#{RegistrationBB.email}"
+							<p:inputText id="email" value="#{registrationBB.email}"
 								required="true" requiredMessage="Podaj adres e-mail">
 								<f:validateRegex
-									pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+									pattern=".*"
 									validatorMessage="Podaj poprawny adres e-mail." />
 							</p:inputText>
 							<h:outputText value="" />
 
 							<!-- Hasło -->
 							<p:outputLabel for="password" value="Hasło:" />
-							<p:password id="password" value="#{RegistrationBB.password}"
+							<p:password id="password" value="#{registrationBB.password}"
 								required="true" requiredMessage="Podaj hasło"
 								validatorMessage="Hasło musi mieć od 6 do 100 znaków">
-								<f:validateLength minimum="6" maximum="100" />
+								<f:validateLength minimum="1" maximum="100" />
 							</p:password>
 							<h:outputText value="" />
 
 							<!-- Potwierdzenie hasła -->
 							<p:outputLabel for="confirmPassword" value="Potwierdź hasło:" />
 							<p:password id="confirmPassword"
-								value="#{RegistrationBB.confirmPassword}" required="true"
+								value="#{registrationBB.confirmPassword}" required="true"
 								requiredMessage="Potwierdź hasło">
 							</p:password>
 							<h:outputText value="" />
 						</p:panelGrid>
 
 						<p:commandButton value="Zarejestruj się" icon="pi pi-check"
-							styleClass="submit-button" />
+							styleClass="submit-button" action="#{registrationBB.register}"
+							update="messages" />
 					</h:form>
 				</p:panel>
-				
+
 				<div class="info-panel">
-					<p>Masz już konto? <h:link value="Zaloguj się tutaj!" outcome="login.xhtml" /></p>
+					<p>
+						Masz już konto?
+						<h:link value="Zaloguj się tutaj!" outcome="login.xhtml" />
+					</p>
 				</div>
 			</div>
 		</div>

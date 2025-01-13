@@ -18,10 +18,12 @@ public class ReservationTable implements Serializable {
 
     //bi-directional many-to-one association to Reservation
     @ManyToOne
+    @JoinColumn(name="reservation_id", nullable=false)
     private Reservation reservation;
 
     //bi-directional many-to-one association to Tables 
     @ManyToOne
+    @JoinColumn(name="table_id", nullable=false)
     private Tables table; 
 
     public ReservationTable() {

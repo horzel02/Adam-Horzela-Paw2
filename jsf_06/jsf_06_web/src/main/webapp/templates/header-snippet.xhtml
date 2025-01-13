@@ -4,32 +4,49 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:h="http://xmlns.jcp.org/jsf/html">
 
-	<div class="header">
+	<div class="header" id="header">
 		<div class="card">
-			<h:form>
+			<h:form id="headerForm">
 				<p:growl id="messages" />
 
 				<p:menubar hideDelay="1000">
 					<!-- Link na początek menu -->
 					<f:facet name="start">
 						<h:outputLink value="main.xhtml" styleClass="logo">
-						Rezerwolo
-					</h:outputLink>
+                            Rezerwolo
+                        </h:outputLink>
 					</f:facet>
 
-					<!-- Link do Listy użytkowników -->
+					<!-- Linki widoczne dla wszystkich użytkowników -->
 					<p:menuitem value="Strona główna" icon="pi pi-fw pi-home"
 						outcome="main.xhtml" />
 					<p:menuitem value="Rezerwuj" icon="pi pi-fw pi-calendar"
 						outcome="reserve.xhtml" />
-					<p:menuitem value="Lista użytkowników" icon="pi pi-fw pi-users"
-						outcome="userList.xhtml" />
-					<p:menuitem value="Dodaj użytkownika" icon="pi pi-fw pi-user-plus"
-						outcome="userEdit.xhtml" />
-					<p:menuitem value="Zaloguj się" icon="pi pi-fw pi-user-plus"
-						outcome="login.xhtml" />
+
+					<!-- Linki widoczne tylko dla zalogowanych użytkowników -->
+					<p:submenu label="Panel użytkownika" icon="pi pi-fw pi-user"
+						rendered="#{not empty loginBB.loggedUser}">
+						<p:menuitem value="Lista użytkowników" icon="pi pi-fw pi-users"
+							outcome="userList.xhtml" />
+						<p:menuitem value="Dodaj użytkownika" icon="pi pi-fw pi-user-plus"
+							outcome="userEdit.xhtml" />
+					</p:submenu>
+
+					<p:menuitem
+						value="Zalogowany: #{loginBB.loggedUserRole} #{loginBB.loggedUser.name} #{loginBB.loggedUser.surname}"
+						rendered="#{not empty loginBB.loggedUser}" />
+
+					<!-- Przycisk wylogowania -->
+					<p:menuitem value="Wyloguj" icon="pi pi-fw pi-sign-out"
+						action="#{loginBB.doLogout}"
+						rendered="#{not empty loginBB.loggedUser}" />
+
+					<!-- Linki widoczne tylko dla niezalogowanych użytkowników -->
+					<p:menuitem value="Zaloguj się" icon="pi pi-fw pi-user"
+						outcome="login.xhtml" rendered="#{empty loginBB.loggedUser}" />
 					<p:menuitem value="Zarejestruj się" icon="pi pi-fw pi-user-plus"
-						outcome="registration.xhtml" />
+						outcome="registration.xhtml"
+						rendered="#{empty loginBB.loggedUser}" />
 
 					<!-- Koniec menu -->
 					<f:facet name="end">
