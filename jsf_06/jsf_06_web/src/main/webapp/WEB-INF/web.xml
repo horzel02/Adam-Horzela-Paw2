@@ -46,9 +46,11 @@
 /main.xhtml : PUBLIC;
 /login.xhtml : PUBLIC;
 /registration.xhtml : PUBLIC;
-/reserve.xhtml : Użytkownik;
-/userEdit.xhtml : Użytkownik;
-/userList.xhtml : Użytkownik;
+/reserve.xhtml : PUBLIC;
+/userEdit.xhtml : admin;
+/userList.xhtml : mod,admin;
+/reservationList.xhtml : admin,mod,Pracownik,Użytkownik;
+/employeeReservations.xhtml : admin,mod,Pracownik;
 			</param-value>
 		</init-param>
 		<init-param>

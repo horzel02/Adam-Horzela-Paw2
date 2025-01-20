@@ -1,0 +1,120 @@
+<ui:composition template="/templates/main-template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+	<ui:define name="title">Lista wszystkich rezerwacji</ui:define>
+
+	<ui:define name="content">
+		<h1 class="main-title">Lista rezerwacji (Pracownicy)</h1>
+		<hr class="divider" />
+
+		<h:form id="reservationForm">
+
+			<p:dataTable id="reservationTable"
+				value="#{employeeReservationListBB.lazyModel}" var="reservation"
+				paginator="true" rows="10" rowsPerPageTemplate="5,10,15"
+				currentPageReportTemplate="Strona {currentPage} z {totalPages}"
+				paginatorPosition="bottom"
+				emptyMessage="Brak rezerwacji spełniających kryteria"
+				paginatorAlwaysVisible="true"
+				filteredValue="#{employeeReservationListBB.filteredReservations}"
+				widgetVar="tableWidget">
+
+				<!-- Kolumna: Numer rezerwacji -->
+				<p:column headerText="Nr rezerwacji" field="id"
+					sortBy="#{reservation.id}" filterBy="#{reservation.id}"
+					filterMatchMode="equals" filterPlaceholder="Filtruj po numerze">
+					<h:outputText value="#{reservation.id}" />
+				</p:column>
+
+				<!-- Kolumna: Imię i Nazwisko -->
+				<p:column headerText="Imię i Nazwisko" field="fullName"
+					sortBy="#{reservation.fullName}" filterBy="#{reservation.fullName}">
+					<h:outputText
+						value="#{reservation.user.name} #{reservation.user.surname}" />
+				</p:column>
+
+
+				<!-- Kolumna: Data -->
+				<p:column field="date" headerText="Data"
+					filterBy="#{reservation.date}" sortBy="#{reservation.date}">
+					<h:outputText value="#{reservation.date}">
+						<f:convertDateTime pattern="yyyy-MM-dd" />
+					</h:outputText>
+					<f:facet name="filter">
+						<p:datePicker onchange="PF('tableWidget').filter()"
+							pattern="yyyy-MM-dd" />
+					</f:facet>
+				</p:column>
+
+				<!-- Kolumna: Godzina -->
+				<p:column field="time" headerText="Godzina"
+					filterBy="#{reservation.time}" sortBy="#{reservation.time}">
+					<h:outputText value="#{reservation.time}">
+						<f:convertDateTime pattern="HH:mm" />
+					</h:outputText>
+					<f:facet name="filter">
+						<p:inputText onchange="PF('tableWidget').filter()"
+							placeholder="hh:mm" />
+					</f:facet>
+				</p:column>
+				
+				<!-- Kolumna: Stolik -->
+				<p:column headerText="Nazwa stolika" field="tableName"
+					sortBy="#{reservation.reservationTables[0].table.name}"
+					filterBy="#{reservation.reservationTables[0].table.name}">
+					<h:outputText
+						value="#{not empty reservation.reservationTables ? reservation.reservationTables[0].table.name : 'Brak stolika'}" />
+					<f:facet name="filter">
+						<p:selectOneMenu
+							value="#{employeeReservationListBB.filterTableName}"
+							onchange="PF('tableWidget').filter()" styleClass="form-input">
+							<f:selectItem itemLabel="Wszystkie" itemValue=""
+								noSelectionOption="true" />
+							<f:selectItems value="#{employeeReservationListBB.tableList}"
+								var="table" itemLabel="#{table.name}" itemValue="#{table.name}" />
+						</p:selectOneMenu>
+					</f:facet>
+				</p:column>
+
+				<!-- Kolumna: Liczba osób -->
+				<p:column field="numberOfPeople" headerText="Liczba osób"
+					filterBy="#{reservation.numberOfPeople}"
+					sortBy="#{reservation.numberOfPeople}">
+					<h:outputText value="#{reservation.numberOfPeople}" />
+					<f:facet name="filter">
+						<p:inputText onchange="PF('tableWidget').filter()">
+							<f:convertNumber integerOnly="true" />
+						</p:inputText>
+					</f:facet>
+				</p:column>
+
+				<!-- Kolumna: Status -->
+				<p:column headerText="Status" field="status"
+					sortBy="#{reservation.status}"
+					filterBy="#{employeeReservationListBB.filterStatus}">
+					<!-- Filtr -->
+					<f:facet name="filter">
+						<p:selectOneMenu value="#{employeeReservationListBB.filterStatus}"
+							onchange="PF('tableWidget').filter()" styleClass="form-input">
+							<f:selectItem itemLabel="Wszystkie" itemValue=""
+								noSelectionOption="true" />
+							<f:selectItems value="#{employeeReservationListBB.statusList}" />
+						</p:selectOneMenu>
+					</f:facet>
+					<!-- Edycja statusu -->
+					<p:selectOneMenu value="#{reservation.status}"
+						styleClass="form-input">
+						<f:selectItems value="#{employeeReservationListBB.statusList}" />
+						<p:ajax event="change"
+							listener="#{employeeReservationListBB.updateReservationStatus(reservation)}"
+							update="@form" />
+					</p:selectOneMenu>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

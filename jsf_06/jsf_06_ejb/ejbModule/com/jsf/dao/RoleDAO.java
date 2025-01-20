@@ -37,7 +37,7 @@ public class RoleDAO {
                      .setParameter("userId", userId)
                      .getSingleResult();
         } catch (Exception e) {
-            return null; // Brak przypisanej roli
+            return null;
         }
     }
 }

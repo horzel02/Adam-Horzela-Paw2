@@ -52,6 +52,10 @@ public class Reservation implements Serializable {
 	//bi-directional many-to-one association to ReservationTable
 	@OneToMany(mappedBy="reservation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReservationTable> reservationTables = new ArrayList<>();
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
+	private User user;
 
 	public Reservation() {
 	}
@@ -134,6 +138,14 @@ public class Reservation implements Serializable {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+	
+	public User getUser() {
+	    return user;
+	}
+
+	public void setUser(User user) {
+	    this.user = user;
 	}
 
 	public List<ReservationTable> getReservationTables() {

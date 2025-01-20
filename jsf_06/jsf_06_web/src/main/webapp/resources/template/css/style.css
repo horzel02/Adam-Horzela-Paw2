@@ -425,3 +425,7 @@ body .submit-button:hover {
 .info-panel a:hover {
 	text-decoration: underline;
 }
+
+.header {
+	z-index: 1000000;
+}

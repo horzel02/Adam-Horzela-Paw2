@@ -3,8 +3,10 @@ package com.jsfcourse.BB;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import org.primefaces.model.LazyDataModel;
+
+import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.context.Flash;
@@ -13,6 +15,7 @@ import jakarta.inject.Named;
 
 import com.jsf.dao.UserDAO;
 import com.jsf.entities.User;
+import com.jsfcourse.BB.lazy.LazyUserDataModel;
 
 @Named
 @RequestScoped
@@ -22,6 +25,9 @@ public class UserListBB implements Serializable {
     private static final String PAGE_USER_EDIT = "userEdit?faces-redirect=true";
 
     private String surnameFilter;
+    
+    private LazyDataModel<User> lazyModel;
+    private List<String> statusList;
 
     @Inject
     private Flash flash;
@@ -33,6 +39,11 @@ public class UserListBB implements Serializable {
 
     public String getSurnameFilter() {
         return surnameFilter;
+    }
+    
+    @PostConstruct
+    public void init() {
+        lazyModel = new LazyUserDataModel(userDAO);
     }
 
     public void setSurnameFilter(String surnameFilter) {
@@ -46,7 +57,6 @@ public class UserListBB implements Serializable {
         return users;
     }
 
-
     public String newUser() {
         User user = new User();
         flash.put("user", user);
@@ -57,23 +67,24 @@ public class UserListBB implements Serializable {
         flash.put("user", user);
         return PAGE_USER_EDIT;
     }
-
-    public String deleteUser(User user) {
-        try {
-            userDAO.deleteUserWithRoles(user);
-        } catch (Exception e) {
-            e.printStackTrace();
+    
+    public void toggleUserActivation(User user) {
+        if (user.getActive() == 1) {
+            userDAO.deactivateUser(user.getId());
+            System.out.println("Użytkownik zdezaktywowany: " + user.getId());
+        } else {
+            userDAO.activateUser(user.getId());
+            System.out.println("Użytkownik aktywowany: " + user.getId());
         }
         users = null;
-        return null;
     }
     
-    public void filter() {
-        Map<String, Object> searchParams = new HashMap<>();
-        if (surnameFilter != null && !surnameFilter.isEmpty()) {
-            searchParams.put("surname", surnameFilter); // Dodaj filtr nazwiska
-        }
-        users = userDAO.getList(searchParams); // Odśwież listę użytkowników
+    public LazyDataModel<User> getLazyModel() {
+        return lazyModel;
+    }
+
+    public List<String> getStatusList() {
+        return statusList;
     }
 
 }

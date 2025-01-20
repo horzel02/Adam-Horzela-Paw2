@@ -10,42 +10,50 @@
 			<div class="header">Lista użytkowników</div>
 			<h:form id="form-table">
 				<p:panel header="Zarządzanie użytkownikami" styleClass="main-panel">
-					<h:panelGrid columns="3" cellpadding="10" style="width: 100%;">
-						<h:outputLabel for="surname" value="Filtruj po nazwisku:"
-							styleClass="ui-outputlabel" />
-						<p:inputText id="surname" value="#{userListBB.surnameFilter}"
-							styleClass="ui-inputfield"
-							validatorMessage="Filtr nazwiska może mieć maksymalnie 50 znaków">
-							<f:validateLength maximum="50" />
-						</p:inputText>
-						<p:message for="surname" />
+					<p:dataTable value="#{userListBB.lazyModel}" var="user" id="table"
+						paginator="true" rows="10" rowsPerPageTemplate="5,10,15"
+						sortMode="multiple"
+						currentPageReportTemplate="Strona {currentPage} z {totalPages}"
+						paginatorPosition="bottom" paginatorAlwaysVisible="true">
 
-						<p:commandButton value="Filtruj" action="#{userListBB.filter}"
-							update="table" styleClass="ui-button" />
-					</h:panelGrid>
-
-					<p:dataTable value="#{userListBB.users}" var="user" id="table"
-						style="margin-top: 20px;" styleClass="p-datatable">
-						<p:column headerText="ID">
+						<!-- Kolumna: ID -->
+						<p:column headerText="ID" sortBy="#{user.id}"
+							filterBy="#{user.id}" filterMatchMode="contains"
+							filterPlaceholder="Filtruj po ID">
 							<h:outputText value="#{user.id}" />
 						</p:column>
-						<p:column headerText="Imię">
+
+
+						<!-- Kolumna: Imię -->
+						<p:column headerText="Imię" sortBy="#{user.name}"
+							filterBy="#{user.name}" filterPlaceholder="Filtruj po imieniu">
 							<h:outputText value="#{user.name}" />
 						</p:column>
-						<p:column headerText="Nazwisko">
+
+						<!-- Kolumna: Nazwisko -->
+						<p:column headerText="Nazwisko" sortBy="#{user.surname}"
+							filterBy="#{user.surname}"
+							filterPlaceholder="Filtruj po nazwisku">
 							<h:outputText value="#{user.surname}" />
 						</p:column>
-						<p:column headerText="Email">
+
+						<!-- Kolumna: Email -->
+						<p:column headerText="Email" sortBy="#{user.email}"
+							filterBy="#{user.email}" filterPlaceholder="Filtruj po emailu">
 							<h:outputText value="#{user.email}" />
 						</p:column>
+
+						<!-- Kolumna: Akcje -->
 						<p:column headerText="Akcje">
 							<p:commandButton value="Edytuj"
 								action="#{userListBB.editUser(user)}" styleClass="ui-button" />
-							<p:commandButton value="Usuń"
-								action="#{userListBB.deleteUser(user)}" update="@form"
-								styleClass="button-secondary" />
+							<p:commandButton
+								value="#{user.active == 1 ? 'Dezaktywuj konto' : 'Aktywuj konto'}"
+								actionListener="#{userListBB.toggleUserActivation(user)}"
+								update="table" styleClass="ui-button-secondary" />
 						</p:column>
 					</p:dataTable>
+
 				</p:panel>
 			</h:form>
 		</div>

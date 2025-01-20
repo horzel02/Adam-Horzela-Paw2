@@ -11,10 +11,14 @@ import com.jsf.dao.UserDAO;
 import com.jsf.dao.RoleDAO;
 import com.jsf.entities.User;
 
+/**
+ * Managed Bean obsługujący proces rejestracji użytkownika.
+ */
 @Named
 @RequestScoped
 public class RegistrationBB {
 
+    // Pola do przechowywania danych wejściowych użytkownika
     private String firstName;
     private String lastName;
     private String email;
@@ -27,10 +31,11 @@ public class RegistrationBB {
     @Inject
     private RoleDAO roleDAO;
 
+    // Gettery i settery
     public String getFirstName() {
         return firstName;
     }
-
+    
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -67,44 +72,52 @@ public class RegistrationBB {
         this.confirmPassword = confirmPassword;
     }
 
+    /**
+     * Obsługuje proces rejestracji nowego użytkownika.
+     * @return przekierowanie na stronę logowania w przypadku sukcesu lub null w przypadku błędu
+     */
     public String register() {
-    	System.out.println("Metoda Register została wywołana.");
         FacesContext ctx = FacesContext.getCurrentInstance();
 
+        // Sprawdzenie zgodności haseł
         if (!password.equals(confirmPassword)) {
             ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hasła nie są zgodne.", null));
             return null;
         }
 
+        // Sprawdzenie, czy adres e-mail już istnieje w bazie
         if (userDAO.emailExists(email)) {
             ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Podany e-mail już istnieje.", null));
             return null;
         }
 
         try {
+            // Tworzenie nowego użytkownika
             User user = new User();
             user.setName(firstName);
             user.setSurname(lastName);
             user.setEmail(email);
-            
+
+            // Hashowanie hasła przed zapisaniem
             String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
             user.setPassword(hashedPassword);
-            
-            user.setActive((byte) 1);
-            
-            System.out.println("Tworzę użytkownika: " + user);
 
+            user.setActive((byte) 1);
+
+            // Zapis użytkownika w bazie danych
             userDAO.create(user);
 
-            // Przypisanie domyślnej roli (Użytkownik)
+            // Przypisanie domyślnej roli użytkownika
             roleDAO.assignRoleToUser(user.getId(), 3);
-            System.out.println("Przypisano rolę użytkownikowi: " + user.getId());
 
+            // Dodanie wiadomości o sukcesie
             ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Rejestracja zakończona sukcesem!", null));
+
+            // Przekierowanie na stronę logowania
             return "/login.xhtml?faces-redirect=true";
 
         } catch (Exception e) {
-            e.printStackTrace();
+            // Obsługa błędów podczas rejestracji
             ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Wystąpił błąd podczas rejestracji.", null));
             return null;
         }

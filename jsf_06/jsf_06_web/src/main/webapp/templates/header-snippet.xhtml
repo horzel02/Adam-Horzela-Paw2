@@ -7,7 +7,6 @@
 	<div class="header" id="header">
 		<div class="card">
 			<h:form id="headerForm">
-				<p:growl id="messages" />
 
 				<p:menubar hideDelay="1000">
 					<!-- Link na początek menu -->
@@ -17,21 +16,31 @@
                         </h:outputLink>
 					</f:facet>
 
-					<!-- Linki widoczne dla wszystkich użytkowników -->
-					<p:menuitem value="Strona główna" icon="pi pi-fw pi-home"
+					<!-- Dostępne dla każdego -->
+					<p:menuitem value="Strona główna" icon="pi pi-home"
 						outcome="main.xhtml" />
 					<p:menuitem value="Rezerwuj" icon="pi pi-fw pi-calendar"
 						outcome="reserve.xhtml" />
 
-					<!-- Linki widoczne tylko dla zalogowanych użytkowników -->
-					<p:submenu label="Panel użytkownika" icon="pi pi-fw pi-user"
+					<!-- Widoczne tylko dla zalogowanych -->
+					<p:submenu label="Panel użytkownika" icon="pi pi-user"
 						rendered="#{not empty loginBB.loggedUser}">
-						<p:menuitem value="Lista użytkowników" icon="pi pi-fw pi-users"
-							outcome="userList.xhtml" />
-						<p:menuitem value="Dodaj użytkownika" icon="pi pi-fw pi-user-plus"
-							outcome="userEdit.xhtml" />
+						<p:menuitem value="Twoje rezerwacje"
+							outcome="reservationList.xhtml" />
 					</p:submenu>
+					
+					<!-- Widoczne tylko dla zalogowanych -->
+					<p:menuitem value="Obsługa rezerwacji" icon="pi pi-list"
+						outcome="employeeReservations.xhtml"
+						rendered="#{loginBB.loggedUserRole == 'Pracownik'or loginBB.loggedUserRole == 'mod' or loginBB.loggedUserRole == 'admin'}" />
 
+					<!-- Widoczne tylko dla moderatorów i administratorów -->
+					<p:submenu label="Panel moderacji" icon="pi pi-cog"
+						rendered="#{loginBB.loggedUserRole == 'mod' or loginBB.loggedUserRole == 'admin'}">
+						<p:menuitem value="Lista użytkowników" outcome="userList.xhtml" />
+					</p:submenu>
+					
+					<!-- Informacja o userze -->
 					<p:menuitem
 						value="Zalogowany: #{loginBB.loggedUserRole} #{loginBB.loggedUser.name} #{loginBB.loggedUser.surname}"
 						rendered="#{not empty loginBB.loggedUser}" />
@@ -41,7 +50,7 @@
 						action="#{loginBB.doLogout}"
 						rendered="#{not empty loginBB.loggedUser}" />
 
-					<!-- Linki widoczne tylko dla niezalogowanych użytkowników -->
+					<!-- Widoczne tylko dla niezalogowanych użytkowników -->
 					<p:menuitem value="Zaloguj się" icon="pi pi-fw pi-user"
 						outcome="login.xhtml" rendered="#{empty loginBB.loggedUser}" />
 					<p:menuitem value="Zarejestruj się" icon="pi pi-fw pi-user-plus"

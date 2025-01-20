@@ -15,6 +15,9 @@ import com.jsf.entities.User;
 import com.jsf.entities.Role;
 import jakarta.faces.simplesecurity.RemoteClient;
 
+/**
+ * Managed Bean obsługujący proces logowania i wylogowania użytkownika.
+ */
 @Named
 @SessionScoped
 public class LoginBB implements Serializable {
@@ -26,8 +29,9 @@ public class LoginBB implements Serializable {
     private String loggedUserRole;
 
     @Inject
-    private UserDAO userDAO;
+    private UserDAO userDAO; // DAO obsługujące operacje na użytkownikach
 
+    // Gettery i settery dla pól email i password
     public String getEmail() {
         return email;
     }
@@ -45,46 +49,39 @@ public class LoginBB implements Serializable {
     }
 
     public String getLoggedUserRole() {
-        System.out.println("Pobieram rolę użytkownika: " + this.loggedUserRole);
         return this.loggedUserRole;
     }
 
     public User getLoggedUser() {
-        if (this.loggedUser != null) {
-            System.out.println("Pobrano zalogowanego użytkownika: " + loggedUser.getName() + " " + loggedUser.getSurname());
-        } else {
-            System.out.println("Brak zalogowanego użytkownika w getLoggedUser()");
-        }
         return this.loggedUser;
     }
 
+    /**
+     * Metoda obsługująca proces logowania użytkownika.
+     * @return przekierowanie do strony głównej po zalogowaniu lub null w przypadku błędu.
+     */
     public String doLogin() {
-        FacesContext ctx = FacesContext.getCurrentInstance(); // Kontekst przeniesiony na początek metody
+        FacesContext ctx = FacesContext.getCurrentInstance();
 
         try {
-            System.out.println("Rozpoczęto logowanie: " + email);
-
             // Wyszukaj użytkownika na podstawie e-maila
             User user = userDAO.findByEmail(email);
-            if (user == null) {
+            if (user == null || !BCrypt.checkpw(password, user.getPassword())) {
                 ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Niepoprawny e-mail lub hasło.", null));
                 return null;
             }
-
-            // Weryfikacja hasła
-            if (!BCrypt.checkpw(password, user.getPassword())) {
-                ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Niepoprawny e-mail lub hasło.", null));
+            
+            // Sprawdź, czy konto jest aktywne
+            if (user.getActive() == 0) {
+                ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Twoje konto jest nieaktywne. Skontaktuj się z administratorem.", null));
                 return null;
             }
 
-            System.out.println("Zalogowano użytkownika: " + user.getEmail());
-
-            // Tworzenie obiektu RemoteClient
+            // Tworzenie obiektu RemoteClient i przypisywanie ról
             RemoteClient<User> client = new RemoteClient<>();
             client.setDetails(user);
             client.setLogin(user.getEmail());
 
-            // Pobieranie ról użytkownika
             List<Role> roles = userDAO.getRolesByUserId(user.getId());
             if (!roles.isEmpty()) {
                 this.loggedUserRole = roles.get(0).getRoleName();
@@ -95,20 +92,23 @@ public class LoginBB implements Serializable {
                 this.loggedUserRole = "Brak roli";
             }
 
+            // Przechowywanie informacji o zalogowanym użytkowniku w sesji
             HttpServletRequest request = (HttpServletRequest) ctx.getExternalContext().getRequest();
             client.store(request);
 
-            this.loggedUser = user; // Aktualizacja zalogowanego użytkownika w sesji
+            this.loggedUser = user;
             return "/main.xhtml?faces-redirect=true";
 
         } catch (Exception e) {
-            e.printStackTrace();
             ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Wystąpił błąd podczas logowania.", null));
             return null;
         }
     }
 
-
+    /**
+     * Metoda obsługująca proces wylogowania użytkownika.
+     * @return przekierowanie do strony logowania.
+     */
     public String doLogout() {
         this.loggedUser = null;
         this.loggedUserRole = null;
@@ -116,8 +116,10 @@ public class LoginBB implements Serializable {
         return "/login.xhtml?faces-redirect=true";
     }
 
+    /**
+     * Konstruktor inicjalizujący zalogowanego użytkownika na podstawie sesji.
+     */
     public LoginBB() {
-        System.out.println("LoginBB initialized");
         FacesContext ctx = FacesContext.getCurrentInstance();
         if (ctx != null) {
             try {
@@ -125,22 +127,9 @@ public class LoginBB implements Serializable {
                 RemoteClient<User> client = RemoteClient.load(request.getSession());
                 if (client != null) {
                     this.loggedUser = client.getDetails();
-                    if (loggedUser != null) {
-                        System.out.println("Zalogowany użytkownik: " + loggedUser.getName() + " " + loggedUser.getSurname());
-
-                        // Pobieranie ról użytkownika
-                        if (!client.getRoles().isEmpty()) {
-                            this.loggedUserRole = client.getRoles().iterator().next(); // Pobierz pierwszą rolę
-                        } else {
-                            this.loggedUserRole = "Brak roli";
-                        }
-                    } else {
-                        System.out.println("Brak zalogowanego użytkownika.");
-                    }
+                    this.loggedUserRole = client.getRoles().isEmpty() ? "Brak roli" : client.getRoles().iterator().next();
                 }
-
             } catch (Exception e) {
-                System.out.println("Błąd w konstruktorze LoginBB: " + e.getMessage());
             }
         }
     }

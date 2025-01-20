@@ -82,23 +82,34 @@ public class UserDAO {
             query.setParameter("surname", surname + "%");
         }
 
-        System.out.println("Zapytanie: " + query.toString()); // Debug
         return query.getResultList();
     }
+    
+    /**
+     * Dezaktywuje użytkownika (ustawia active na 0).
+     */
+    public void deactivateUser(int userId) {
+        User user = em.find(User.class, userId);
+        if (user != null) {
+            user.setActive((byte) 0);
+            em.merge(user);
+            em.flush();
+        }
+    }
+    
+    public void activateUser(int userId) {
+        User user = em.find(User.class, userId);
+        if (user != null) {
+            user.setActive((byte) 1);
+            em.merge(user);
+            em.flush();
+        }
+    }
+
 
     // --------------------
     // Role Management
     // --------------------
-
-    /**
-     * Usuwa użytkownika z bazy danych wraz z przypisanymi rolami.
-     */
-    public void deleteUserWithRoles(User user) {
-        em.createNativeQuery("DELETE FROM user_roles WHERE user_id = :userId")
-                .setParameter("userId", user.getId())
-                .executeUpdate();
-        remove(user);
-    }
 
     /**
      * Przypisuje domyślną rolę "Użytkownik" (ID 3) nowo zarejestrowanemu użytkownikowi.
@@ -107,7 +118,7 @@ public class UserDAO {
         try {
             Query query = em.createNativeQuery("INSERT INTO user_roles (user_id, role_id, assignment_date) VALUES (:userId, :roleId, CURRENT_TIMESTAMP)");
             query.setParameter("userId", user.getId());
-            query.setParameter("roleId", 3); // ID domyślnej roli "Użytkownik"
+            query.setParameter("roleId", 3);
             query.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -147,7 +158,7 @@ public class UserDAO {
                      .setParameter("email", email)
                      .getSingleResult();
         } catch (Exception e) {
-            return null; // Jeśli użytkownik nie istnieje
+            return null;
         }
     }
 }
